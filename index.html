@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinançasPro - Gestão Pessoal</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -20,16 +23,18 @@
 </head>
 <body class="bg-gray-50 text-gray-900 h-screen flex flex-col overflow-hidden">
 
+    <!-- ================= ECRÃ DE AUTENTICAÇÃO ================= -->
     <div id="auth-screen" class="absolute inset-0 bg-emerald-900 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-3xl p-8 shadow-2xl w-full max-w-md my-8">
             <div class="text-center mb-8">
                 <i class="fas fa-wallet text-emerald-600 text-5xl mb-4"></i>
                 <h1 class="font-bold text-3xl text-gray-800 tracking-tight">Finanças<span class="text-emerald-600">Pro</span></h1>
-                <p class="text-gray-500 mt-2">O seu gestor financeiro inteligente.</p>
+                <p class="text-gray-500 mt-2">Gestão financeira inteligente.</p>
             </div>
 
+            <!-- Form Login -->
             <form id="login-form" class="space-y-4">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Aceder à conta</h2>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Acessar Conta</h2>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
                     <input type="email" id="login-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
@@ -38,17 +43,16 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
                     <input type="password" id="login-password" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
-                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">
-                    Entrar
-                </button>
+                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">Entrar</button>
                 <div class="flex justify-between text-sm mt-4">
                     <button type="button" onclick="toggleAuthMode('register')" class="text-emerald-600 hover:underline font-medium">Criar conta grátis (15 dias)</button>
                     <button type="button" onclick="toggleAuthMode('recover')" class="text-gray-500 hover:underline">Esqueci a senha</button>
                 </div>
             </form>
 
+            <!-- Form Registo (COM CPF) -->
             <form id="register-form" class="space-y-4 hidden">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Criar nova conta</h2>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Nova Conta</h2>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">CPF</label>
                     <input type="text" id="reg-cpf" required placeholder="000.000.000-00" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
@@ -58,17 +62,16 @@
                     <input type="email" id="reg-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha (Mínimo 6 caracteres)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha (Mín. 6 caracteres)</label>
                     <input type="password" id="reg-password" required minlength="6" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
-                <button type="submit" class="w-full mt-2 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition-colors">
-                    Criar Conta
-                </button>
+                <button type="submit" class="w-full mt-2 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition-colors">Criar Conta</button>
                 <div class="text-center text-sm mt-4">
-                    <button type="button" onclick="toggleAuthMode('login')" class="text-emerald-600 hover:underline font-medium">Já tenho conta. Iniciar sessão.</button>
+                    <button type="button" onclick="toggleAuthMode('login')" class="text-emerald-600 hover:underline font-medium">Já tenho conta. Logar.</button>
                 </div>
             </form>
 
+            <!-- Form Recuperar Senha -->
             <form id="recover-form" class="space-y-4 hidden">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Recuperar Senha</h2>
                 <p class="text-sm text-gray-600 mb-4">Insira o seu e-mail e enviaremos um link de recuperação.</p>
@@ -76,132 +79,174 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
                     <input type="email" id="rec-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
-                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">
-                    Enviar Link
-                </button>
+                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">Enviar Link</button>
                 <div class="text-center text-sm mt-4">
                     <button type="button" onclick="toggleAuthMode('login')" class="text-gray-500 hover:underline">Voltar para Login</button>
                 </div>
             </form>
 
+            <!-- Loading Indicator & Mensagens -->
             <div id="auth-loading" class="hidden mt-4 text-center text-emerald-600">
                 <i class="fas fa-circle-notch fa-spin text-2xl"></i>
-                <p class="text-sm mt-2 font-medium">A processar...</p>
             </div>
             <div id="auth-error" class="hidden mt-4 p-3 bg-red-100 text-red-700 text-sm rounded-xl text-center"></div>
             <div id="auth-success" class="hidden mt-4 p-3 bg-green-100 text-green-700 text-sm rounded-xl text-center"></div>
         </div>
     </div>
 
-    <div id="paywall-screen" class="hidden absolute inset-0 bg-gray-100 z-40 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 shadow-2xl w-full max-w-lg text-center border-t-8 border-red-500">
-            <div class="bg-red-100 text-red-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+    <!-- ================= PAYWALL (TESTE/MENSALIDADE EXPIRADA) ================= -->
+    <div id="paywall-screen" class="hidden absolute inset-0 bg-gray-100 z-40 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl p-8 shadow-2xl w-full max-w-lg text-center border-t-8 border-emerald-500 my-8">
+            <div class="bg-emerald-100 text-emerald-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <i class="fas fa-lock text-3xl"></i>
             </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Tempo Esgotado</h2>
-            <p class="text-gray-600 mb-8">Os seus 15 dias de teste grátis terminaram. Para continuar a gerenciar suas finanças e acessar seus dados, por favor assine o nosso plano mensal.</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Acesso Expirado</h2>
+            <p class="text-gray-600 mb-8">O seu tempo de uso expirou. Assine agora para continuar a aceder aos seus dados e organizar a sua vida financeira.</p>
             
             <div class="bg-gray-50 rounded-xl p-4 mb-8 border border-gray-200">
-                <p class="text-sm text-gray-500 uppercase tracking-wider font-bold">Plano Pro</p>
-                <p class="text-3xl font-bold text-gray-800 mt-1">R$ 49,00 <span class="text-lg font-normal text-gray-500">/mês</span></p>
+                <p class="text-sm text-gray-500 uppercase tracking-wider font-bold">Plano Mensal Pro</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">R$ 24,90 <span class="text-lg font-normal text-gray-500">/mês</span></p>
             </div>
 
-            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLANO_AQUI" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors mb-4 flex items-center justify-center">
-                <i class="fas fa-handshake mr-2"></i> Assinar via Mercado Pago
+            <!-- Link do Mercado Pago -->
+            <a href="SEU_LINK_MERCADO_PAGO_AQUI" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors mb-6 flex items-center justify-center shadow-md">
+                <i class="fas fa-check-circle mr-2"></i> Assinar via Mercado Pago
             </a>
             
-            <button onclick="logout()" class="text-gray-500 hover:text-gray-800 underline text-sm">
-                Sair da conta
-            </button>
+            <!-- Código de Liberação Manual (A Magia acontece aqui) -->
+            <div class="border-t border-gray-200 pt-6 mb-6">
+                <p class="text-sm text-gray-600 font-medium mb-2">Já efetuou o pagamento?</p>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="activation-code" placeholder="Código de Liberação" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none text-center uppercase">
+                    <button onclick="activateSubscription()" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                        Validar
+                    </button>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Insira o código fornecido pelo suporte após o pagamento.</p>
+            </div>
+
+            <button onclick="logout()" class="text-gray-500 hover:text-gray-800 underline text-sm">Sair da conta</button>
         </div>
     </div>
 
+    <!-- ================= APLICAÇÃO PRINCIPAL ================= -->
     <div id="app-container" class="hidden flex flex-col h-screen w-full">
+        <!-- Header / Nav -->
         <header class="bg-emerald-800 text-white shadow-md z-10 shrink-0">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center">
-                        <i class="fas fa-wallet text-emerald-300 text-2xl mr-3"></i>
-                        <span class="font-bold text-xl tracking-tight hidden sm:inline">Finanças<span class="text-emerald-300">Pro</span></span>
-                    </div>
-                    <nav class="flex space-x-1 sm:space-x-3">
-                        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn bg-emerald-900 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
-                            <i class="fas fa-home sm:mr-2"></i> <span class="hidden md:inline">Visão Geral</span>
-                        </button>
-                        <button onclick="switchTab('add')" id="btn-add" class="tab-btn text-emerald-100 hover:bg-emerald-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
-                            <i class="fas fa-plus-circle sm:mr-2"></i> <span class="hidden md:inline">Lançar</span>
-                        </button>
-                        <button onclick="switchTab('settings')" id="btn-settings" class="tab-btn text-emerald-100 hover:bg-emerald-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
-                            <i class="fas fa-cog sm:mr-2"></i> <span class="hidden md:inline">Ajustes</span>
-                        </button>
-                        <button onclick="logout()" class="text-red-300 hover:bg-red-800 hover:text-white ml-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center border border-transparent hover:border-red-700">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </nav>
+            <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-wallet text-emerald-300 text-2xl mr-3"></i>
+                    <span class="font-bold text-xl">FinançasPro</span>
                 </div>
+                <nav class="flex space-x-1 sm:space-x-2">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn px-2 sm:px-3 py-2 rounded-lg text-sm bg-emerald-900 text-white font-medium transition-colors flex items-center">
+                        <i class="fas fa-home sm:mr-2"></i> <span class="hidden md:inline">Visão Geral</span>
+                    </button>
+                    <button onclick="switchTab('add')" id="btn-add" class="tab-btn px-2 sm:px-3 py-2 rounded-lg text-sm text-emerald-100 hover:bg-emerald-700 font-medium transition-colors flex items-center">
+                        <i class="fas fa-plus-circle sm:mr-2"></i> <span class="hidden md:inline">Lançar</span>
+                    </button>
+                    <button onclick="switchTab('details')" id="btn-details" class="tab-btn px-2 sm:px-3 py-2 rounded-lg text-sm text-emerald-100 hover:bg-emerald-700 font-medium transition-colors flex items-center">
+                        <i class="fas fa-chart-pie sm:mr-2"></i> <span class="hidden md:inline">Relatórios</span>
+                    </button>
+                    <button onclick="switchTab('settings')" id="btn-settings" class="tab-btn px-2 sm:px-3 py-2 rounded-lg text-sm text-emerald-100 hover:bg-emerald-700 font-medium transition-colors flex items-center">
+                        <i class="fas fa-cog sm:mr-2"></i> <span class="hidden md:inline">Ajustes</span>
+                    </button>
+                    <button onclick="logout()" class="text-red-300 hover:bg-red-800 hover:text-white ml-1 sm:ml-2 px-2 sm:px-3 py-2 rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-red-700">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </nav>
             </div>
         </header>
 
-        <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow overflow-y-auto">
+        <!-- Main Content -->
+        <main class="max-w-5xl mx-auto px-4 py-8 w-full flex-grow overflow-y-auto">
             
+            <!-- ================= VISÃO GERAL (DASHBOARD) ================= -->
             <div id="tab-dashboard" class="tab-content active space-y-8 pb-8">
+                <!-- Resumo Financeiro Inteligente -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
                     <div class="bg-emerald-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-20"><i class="fas fa-wallet text-5xl"></i></div>
-                        <p class="text-emerald-100 text-sm font-medium">Saldo Disponível</p>
+                        <p class="text-emerald-100 text-sm font-medium">Saldo Disponível (Livre)</p>
                         <h2 class="text-3xl font-bold mt-1" id="dash-remaining">R$ 0,00</h2>
-                        <p class="text-emerald-200 text-xs mt-2">De <span id="dash-income">R$ 0,00</span> (Renda Mensal)</p>
+                        <div class="mt-3 pt-3 border-t border-emerald-500/50">
+                            <p class="text-emerald-100 text-xs" id="dash-income-info">
+                                <!-- Preenchido pelo JS -->
+                            </p>
+                        </div>
                     </div>
+                    
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 flex items-center">
-                        <div class="bg-emerald-100 p-3 rounded-full mr-4 text-emerald-600">
-                            <i class="fas fa-chart-line text-xl"></i>
+                        <div class="bg-blue-100 p-3 rounded-full mr-4 text-blue-600">
+                            <i class="fas fa-bullseye text-xl"></i>
                         </div>
                         <div>
-                            <p class="text-gray-500 text-sm font-medium">Orçado Total</p>
+                            <p class="text-gray-500 text-sm font-medium">Total Comprometido / Reservado</p>
                             <h3 class="text-xl font-bold text-gray-800" id="dash-budgeted">R$ 0,00</h3>
                         </div>
                     </div>
+
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 flex items-center">
                         <div class="bg-red-100 p-3 rounded-full mr-4 text-red-600">
                             <i class="fas fa-arrow-down text-xl"></i>
                         </div>
                         <div>
-                            <p class="text-gray-500 text-sm font-medium">Gasto Atual</p>
+                            <p class="text-gray-500 text-sm font-medium">Gasto Real (Lançamentos + Fixas)</p>
                             <h3 class="text-xl font-bold text-gray-800" id="dash-spent">R$ 0,00</h3>
                         </div>
                     </div>
                 </div>
 
+                <!-- Gestão de Categorias -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
                     <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-list mr-2 text-emerald-600"></i> Orçamento por Categoria
+                        <i class="fas fa-list mr-2 text-emerald-600"></i> Suas Reservas e Gastos
                     </h3>
-                    <div id="progress-bars-container" class="space-y-6"></div>
+                    <div id="progress-bars-container" class="space-y-6">
+                        <!-- Gerado por JS com as regras visuais corretas -->
+                    </div>
                 </div>
 
+                <!-- Histórico de Gastos -->
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
                     <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-history mr-2 text-emerald-600"></i> Histórico de Gastos
+                        <i class="fas fa-history mr-2 text-emerald-600"></i> Histórico de Despesas Variáveis
                     </h3>
                     <div id="history-container" class="space-y-4"></div>
                 </div>
             </div>
 
+            <!-- ================= RELATÓRIOS DETALHADOS ================= -->
+            <div id="tab-details" class="tab-content pb-8">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-chart-pie mr-2 text-emerald-600 text-2xl"></i> Resumo Detalhado
+                    </h3>
+                    <div id="detailed-report-container" class="space-y-4">
+                        <!-- Gerado pelo JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= LANÇAR GASTO ================= -->
             <div id="tab-add" class="tab-content pb-8">
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 max-w-2xl mx-auto">
                     <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-plus-circle mr-2 text-emerald-600 text-2xl"></i> Novo Lançamento
+                        <i class="fas fa-plus-circle mr-2 text-emerald-600 text-2xl"></i> Lançar Despesa Variável
                     </h3>
+                    <p class="text-sm text-gray-500 mb-6">As despesas fixas já são descontadas automaticamente. Registre aqui apenas os gastos das suas reservas variáveis.</p>
                     <form id="form-transaction" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Valor Gasto (R$)</label>
                                 <input type="number" step="0.01" id="tx-amount" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="0,00">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Abater de qual Categoria?</label>
                                 <select id="tx-category" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
-                                    <option value="">Selecione...</option>
+                                    <option value="">Selecione a Categoria...</option>
+                                    <!-- Preenchido apenas com categorias variáveis via JS -->
                                 </select>
                             </div>
                         </div>
@@ -230,49 +275,54 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Descrição Adicional (Opcional)</label>
-                            <input type="text" id="tx-description" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Ex: Compras do mês">
+                            <input type="text" id="tx-description" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Ex: Lanche de domingo">
                         </div>
                         <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-colors">
-                            Salvar Gasto
+                            Registrar Despesa
                         </button>
                     </form>
                 </div>
             </div>
 
+            <!-- ================= AJUSTES ================= -->
             <div id="tab-settings" class="tab-content pb-8">
                 <div class="space-y-6">
+                    <!-- Renda -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
                         <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-wallet mr-2 text-emerald-600"></i> Configuração de Renda
+                            <i class="fas fa-wallet mr-2 text-emerald-600"></i> Configuração de Renda Total
                         </h3>
+                        <p class="text-sm text-gray-500 mb-4">Insira o valor total da sua renda. Ao criar uma categoria (fixa ou variável) abaixo, o valor será descontado automaticamente daqui.</p>
                         <div class="flex flex-col sm:flex-row items-end gap-4">
                             <div class="w-full sm:w-2/3 md:w-1/3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Renda Mensal Total (R$)</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Renda Mensal (R$)</label>
                                 <input type="number" id="input-income" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                             </div>
                             <button onclick="saveIncome()" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl font-medium transition-colors">Guardar</button>
                         </div>
                     </div>
 
+                    <!-- Categorias / Reservas -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
                         <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-cog mr-2 text-emerald-600"></i> Distribuição de Orçamento
+                            <i class="fas fa-cog mr-2 text-emerald-600"></i> Criar Categorias de Despesa
                         </h3>
+                        
                         <form id="form-category" class="flex flex-col md:flex-row gap-3 mb-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
                             <div class="flex-1">
-                                <input type="text" id="cat-name" required placeholder="Nova Categoria (Ex: Viagem)" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <input type="text" id="cat-name" required placeholder="Nome (Ex: Lazer ou Luz)" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                             </div>
                             <div class="w-full md:w-40">
                                 <select id="cat-type" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
-                                    <option value="fixa">Custo Fixo</option>
-                                    <option value="variavel">Custo Variável</option>
+                                    <option value="fixa">Despesa Fixa</option>
+                                    <option value="variavel">Despesa Variável</option>
                                 </select>
                             </div>
                             <div class="w-full md:w-40">
-                                <input type="number" id="cat-budget" required placeholder="Limite (R$)" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <input type="number" id="cat-budget" required placeholder="Valor (R$)" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                             </div>
                             <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap">
-                                Adicionar
+                                Comprometer
                             </button>
                         </form>
                         <div id="categories-container" class="space-y-3"></div>
@@ -283,14 +333,13 @@
         </main>
     </div>
 
+    <!-- ================= MÓDULO FIREBASE E LÓGICA ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // =================================================================
-        // AS SUAS CHAVES DO FIREBASE
-        // =================================================================
+        // CHAVES DO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyACitx-lUbRLcBeDBiEPzPRLSlqJD_60-Y",
             authDomain: "gestaofinanceirapessoal-5c0c0.firebaseapp.com",
@@ -305,19 +354,13 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ================= ESTADO GLOBAL =================
+        // ESTADO GLOBAL
         let currentUser = null;
-        let hasActiveTrial = false;
-
-        let income = 3500;
-        let categories = [
-            { id: '1', name: 'Moradia', type: 'fixa', budget: 1500 },
-            { id: '2', name: 'Alimentação', type: 'variavel', budget: 800 },
-            { id: '3', name: 'Lazer', type: 'variavel', budget: 300 }
-        ];
+        let income = 0; 
+        let categories = []; 
         let transactions = [];
 
-        // ================= FUNÇÕES DE AUTENTICAÇÃO =================
+        // FUNÇÕES DE UI DE AUTENTICAÇÃO
         function showLoading() {
             document.getElementById('auth-loading').classList.remove('hidden');
             document.getElementById('auth-error').classList.add('hidden');
@@ -328,15 +371,11 @@
         function showSuccess(msg) { hideLoading(); document.getElementById('auth-success').innerText = msg; document.getElementById('auth-success').classList.remove('hidden'); }
 
         window.toggleAuthMode = function(mode) {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('register-form').classList.add('hidden');
-            document.getElementById('recover-form').classList.add('hidden');
+            document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
+            document.getElementById('recover-form').classList.toggle('hidden', mode !== 'recover');
             document.getElementById('auth-error').classList.add('hidden');
             document.getElementById('auth-success').classList.add('hidden');
-
-            if (mode === 'login') document.getElementById('login-form').classList.remove('hidden');
-            if (mode === 'register') document.getElementById('register-form').classList.remove('hidden');
-            if (mode === 'recover') document.getElementById('recover-form').classList.remove('hidden');
         };
 
         document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -357,14 +396,17 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                 const user = userCredential.user;
                 
-                // Grava CPF e data
-                const profileRef = doc(db, 'users', user.uid);
-                await setDoc(profileRef, { createdAt: Date.now(), cpf: cpf });
-
-                // Dados iniciais
-                const dataRef = doc(db, 'finance_data', user.uid);
-                await setDoc(dataRef, { income, categories, transactions });
-            } catch (error) { showError("Erro: " + error.message); }
+                // NOVA LÓGICA DE VALIDADE: Cria a conta e adiciona 15 dias de acesso
+                const validadeInicial = Date.now() + (15 * 24 * 60 * 60 * 1000); 
+                await setDoc(doc(db, 'users', user.uid), { createdAt: Date.now(), expiresAt: validadeInicial, cpf: cpf });
+                
+                // Dados padrão de boas-vindas
+                const defCats = [
+                    { id: '1', name: 'Moradia (Aluguel/Luz)', type: 'fixa', budget: 1500 },
+                    { id: '2', name: 'Lazer', type: 'variavel', budget: 500 }
+                ];
+                await setDoc(doc(db, 'finance_data', user.uid), { income: 3500, categories: defCats, transactions: [] });
+            } catch (error) { showError("Erro ao criar conta: " + error.message); }
         });
 
         document.getElementById('recover-form').addEventListener('submit', async (e) => {
@@ -376,22 +418,60 @@
 
         window.logout = async function() { await signOut(auth); location.reload(); };
 
-        // ================= GESTÃO DE SESSÃO =================
+        // LÓGICA DE ATIVAÇÃO MANUAL MENSAL (Sem backend)
+        window.activateSubscription = async function() {
+            const codeInput = document.getElementById('activation-code').value.toUpperCase().trim();
+            
+            // A Palavra-passe que tu dás ao cliente após ele te pagar:
+            if (codeInput === 'PAGO2490') { 
+                try {
+                    // Adiciona 30 dias à validade a partir de hoje
+                    const novaValidade = Date.now() + (30 * 24 * 60 * 60 * 1000);
+                    await setDoc(doc(db, 'users', currentUser.uid), { expiresAt: novaValidade }, { merge: true });
+                    
+                    alert("Pagamento validado! O seu acesso foi prolongado por mais 30 dias.");
+                    location.reload();
+                } catch (e) {
+                    alert("Erro ao validar: " + e.message);
+                }
+            } else {
+                alert("Código de liberação inválido. Por favor, verifique com o suporte.");
+            }
+        }
+
+        // GESTÃO DE SESSÃO E VERIFICAÇÃO DO MARCADOR DE VALIDADE
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
                 document.getElementById('auth-screen').classList.add('hidden');
-                const isValid = await checkTrialPeriod(user.uid);
                 
-                if (isValid) {
-                    hasActiveTrial = true;
-                    await loadDataFromFirebase();
-                    document.getElementById('app-container').classList.remove('hidden');
-                    document.getElementById('paywall-screen').classList.add('hidden');
-                } else {
-                    hasActiveTrial = false;
-                    document.getElementById('app-container').classList.add('hidden');
-                    document.getElementById('paywall-screen').classList.remove('hidden');
+                try {
+                    const profileRef = doc(db, 'users', user.uid);
+                    const snap = await getDoc(profileRef);
+                    let userData = snap.exists() ? snap.data() : {};
+                    
+                    // Identifica o marcador de validade
+                    let expiresAt = userData.expiresAt;
+                    
+                    // Fallback de segurança caso a conta seja antiga e só tenha "createdAt"
+                    if (!expiresAt) {
+                        const createdAt = userData.createdAt || Date.now();
+                        expiresAt = createdAt + (15 * 24 * 60 * 60 * 1000); // Converte para validade de 15 dias
+                    }
+
+                    // O MARCADOR DE TEMPO: Compara a data de hoje com a data de expiração gravada
+                    if (Date.now() > expiresAt) {
+                        // BLOQUEIA O ACESSO
+                        document.getElementById('paywall-screen').classList.remove('hidden');
+                        document.getElementById('app-container').classList.add('hidden');
+                    } else {
+                        // LIBERA O ACESSO
+                        document.getElementById('paywall-screen').classList.add('hidden');
+                        document.getElementById('app-container').classList.remove('hidden');
+                        await loadDataFromFirebase();
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
             } else {
                 currentUser = null;
@@ -402,25 +482,8 @@
             }
         });
 
-        async function checkTrialPeriod(uid) {
-            try {
-                const profileRef = doc(db, 'users', uid);
-                const snap = await getDoc(profileRef);
-                if (snap.exists()) {
-                    const data = snap.data();
-                    const createdAt = data.createdAt || Date.now();
-                    const daysElapsed = (Date.now() - createdAt) / (1000 * 60 * 60 * 24);
-                    return daysElapsed <= 15;
-                } else {
-                    await setDoc(profileRef, { createdAt: Date.now() });
-                    return true;
-                }
-            } catch (e) { return false; }
-        }
-
-        // ================= BANCO DE DADOS =================
         async function loadDataFromFirebase() {
-            if (!currentUser || !hasActiveTrial) return;
+            if (!currentUser) return;
             try {
                 const dataRef = doc(db, 'finance_data', currentUser.uid);
                 const snap = await getDoc(dataRef);
@@ -439,7 +502,7 @@
         }
 
         async function saveDataToFirebase() {
-            if (!currentUser || !hasActiveTrial) return;
+            if (!currentUser) return;
             try {
                 const dataRef = doc(db, 'finance_data', currentUser.uid);
                 await setDoc(dataRef, { income, categories, transactions });
@@ -447,10 +510,10 @@
             } catch (e) { console.error("Erro ao gravar:", e); }
         }
 
-        // ================= LÓGICA DA APLICAÇÃO =================
+        // INTERFACE DA APLICAÇÃO FINANCEIRA
         window.saveIncome = function() {
             const val = parseFloat(document.getElementById('input-income').value);
-            if (!isNaN(val)) { income = val; saveDataToFirebase(); alert("Guardado!"); }
+            if (!isNaN(val)) { income = val; saveDataToFirebase(); alert("Renda guardada com sucesso!"); }
         }
 
         window.switchTab = function(tabId) {
@@ -463,51 +526,170 @@
             const btn = document.getElementById(`btn-${tabId}`);
             btn.classList.remove('text-emerald-100');
             btn.classList.add('bg-emerald-900', 'text-white');
-            if(tabId === 'dashboard') updateUI();
+            if(tabId === 'dashboard' || tabId === 'details') updateUI();
         }
 
         const formatMoney = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 
         function updateUI() {
-            const spent = transactions.reduce((acc, tx) => acc + tx.amount, 0);
-            const totalBudget = categories.reduce((acc, cat) => acc + cat.budget, 0);
-            const remaining = income - spent;
+            // CÁLCULOS PRINCIPAIS
+            const totalFixa = categories.filter(c => c.type === 'fixa').reduce((acc, cat) => acc + cat.budget, 0);
+            const totalVariavel = categories.filter(c => c.type === 'variavel').reduce((acc, cat) => acc + cat.budget, 0);
+            const totalReserved = totalFixa + totalVariavel;
+            
+            // Variáveis consumidas (só lançamentos reais em categorias variáveis)
+            const spent = transactions.reduce((acc, tx) => acc + tx.amount, 0); 
+            
+            // Saldo Livre = Renda - Tudo o que você já comprometeu em categorias (Fixas e Variáveis)
+            const freeToBudget = income - totalReserved;
+            
+            // Saldo Real na conta = Renda - Despesas fixas (já saíram do bolso) - Gastos Variáveis lançados
+            const realRemaining = income - totalFixa - spent;
+
+            // Mapeamento de gastos por categoria
             const spentPerCategory = {};
             categories.forEach(c => spentPerCategory[c.id] = 0);
-            transactions.forEach(tx => { if (spentPerCategory[tx.categoryId] !== undefined) spentPerCategory[tx.categoryId] += tx.amount; });
+            transactions.forEach(tx => { 
+                if (spentPerCategory[tx.categoryId] !== undefined) {
+                    spentPerCategory[tx.categoryId] += tx.amount; 
+                }
+            });
 
-            document.getElementById('dash-remaining').innerText = formatMoney(remaining);
-            document.getElementById('dash-income').innerText = formatMoney(income);
-            document.getElementById('dash-budgeted').innerText = formatMoney(totalBudget);
-            document.getElementById('dash-spent').innerText = formatMoney(spent);
+            // ATUALIZAÇÃO DOS CARTÕES DE TOPO
+            document.getElementById('dash-remaining').innerText = formatMoney(freeToBudget);
+            document.getElementById('dash-income-info').innerText = `Renda Total: ${formatMoney(income)}`;
+            document.getElementById('dash-budgeted').innerText = formatMoney(totalReserved);
+            
+            // Gasto real no Dashboard considera fixas (automático) + gastos lançados
+            document.getElementById('dash-spent').innerText = formatMoney(totalFixa + spent);
 
+            // RENDERIZAÇÃO DAS CATEGORIAS (Diferenciando Fixas e Variáveis)
             const progressContainer = document.getElementById('progress-bars-container');
-            if (categories.length === 0) progressContainer.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhuma categoria.</p>';
-            else progressContainer.innerHTML = categories.map(cat => {
-                const catSpent = spentPerCategory[cat.id] || 0;
-                const percentage = cat.budget > 0 ? Math.min((catSpent / cat.budget) * 100, 100) : 0;
-                const isOverLimit = percentage >= 85;
-                const barColor = isOverLimit ? 'bg-red-500' : 'bg-blue-500';
-                const textColor = isOverLimit ? 'text-red-600' : 'text-blue-600';
-                let alertHtml = isOverLimit ? `<div class="flex items-center mt-1 text-red-500 text-xs font-medium animate-pulse"><i class="fas fa-exclamation-triangle mr-1"></i> Atenção: Atingiu ${percentage.toFixed(0)}% do limite!</div>` : '';
-                return `<div class="relative"><div class="flex justify-between items-end mb-1"><div><span class="font-semibold text-gray-800">${cat.name}</span><span class="ml-2 text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full capitalize">${cat.type}</span></div><div class="text-sm font-medium text-gray-600"><span class="${textColor}">${formatMoney(catSpent)}</span> / ${formatMoney(cat.budget)}</div></div><div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden"><div class="${barColor} h-3 rounded-full transition-all duration-500" style="width: ${percentage}%"></div></div>${alertHtml}</div>`;
-            }).join('');
+            
+            if (categories.length === 0) {
+                progressContainer.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhuma reserva criada. Vá a Ajustes e crie as suas categorias.</p>';
+            } else {
+                progressContainer.innerHTML = categories.map(cat => {
+                    const catSpent = spentPerCategory[cat.id] || 0;
 
+                    // --- LÓGICA PARA DESPESAS FIXAS ---
+                    if (cat.type === 'fixa') {
+                        return `
+                        <div class="relative bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                <div class="mb-3 sm:mb-0">
+                                    <span class="font-bold text-gray-800 text-lg">${cat.name}</span>
+                                    <span class="ml-2 text-xs px-2 py-0.5 bg-red-100 text-red-700 rounded-full capitalize">Fixa</span>
+                                </div>
+                                <div class="flex flex-col sm:items-end text-left sm:text-right">
+                                    <span class="text-sm font-bold text-gray-800 bg-gray-50 px-3 py-1 rounded-lg border border-gray-100 mb-1 w-fit sm:w-auto">
+                                        Comprometido: ${formatMoney(cat.budget)}
+                                    </span>
+                                    <span class="text-gray-500 text-xs italic">Valor deduzido automaticamente</span>
+                                </div>
+                            </div>
+                        </div>`;
+                    } 
+                    // --- LÓGICA PARA DESPESAS VARIÁVEIS (Com Barra e Avisos) ---
+                    else {
+                        const catAvailable = cat.budget - catSpent;
+                        const percentageSpent = cat.budget > 0 ? Math.min((catSpent / cat.budget) * 100, 100) : 0;
+                        
+                        const isNearLimit = percentageSpent >= 80;
+                        const isOverLimit = percentageSpent >= 100;
+
+                        let barColor = 'bg-emerald-500';
+                        if (isOverLimit) barColor = 'bg-red-500';
+                        else if (isNearLimit) barColor = 'bg-orange-500';
+
+                        let alertHtml = '';
+                        if (isOverLimit) {
+                            alertHtml = `<div class="flex items-center mt-2 text-red-500 text-xs font-bold animate-pulse"><i class="fas fa-exclamation-triangle mr-1"></i> Limite de reserva esgotado!</div>`;
+                        } else if (isNearLimit) {
+                            alertHtml = `<div class="flex items-center mt-2 text-orange-500 text-xs font-bold animate-pulse"><i class="fas fa-exclamation-triangle mr-1"></i> Atenção: Você já consumiu ${percentageSpent.toFixed(0)}% da reserva para ${cat.name}!</div>`;
+                        }
+
+                        return `
+                        <div class="relative bg-gray-50/50 p-5 rounded-2xl border border-gray-200">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 pb-2 border-b border-gray-200">
+                                <div class="mb-2 sm:mb-0">
+                                    <span class="font-bold text-gray-800 text-lg">${cat.name}</span>
+                                    <span class="ml-2 text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full capitalize">Variável</span>
+                                </div>
+                                <div class="text-sm font-bold text-gray-800 bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm">
+                                    Reserva Total: ${formatMoney(cat.budget)}
+                                </div>
+                            </div>
+
+                            <div class="mb-1">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-gray-600 font-medium">Já gastou: <span class="font-bold text-gray-800">${formatMoney(catSpent)}</span></span>
+                                    <span class="text-gray-600 font-medium">Ainda pode gastar: <span class="font-bold text-emerald-600">${formatMoney(catAvailable)}</span></span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden flex">
+                                    <div class="${barColor} h-3 rounded-full transition-all duration-500" style="width: ${percentageSpent}%"></div>
+                                </div>
+                            </div>
+                            ${alertHtml}
+                        </div>`;
+                    }
+                }).join('');
+            }
+
+            // LISTA DE HISTÓRICO
             const historyContainer = document.getElementById('history-container');
-            if (transactions.length === 0) historyContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhum gasto.</p>';
+            if (transactions.length === 0) historyContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhuma despesa lançada.</p>';
             else historyContainer.innerHTML = transactions.map(tx => {
                 const cat = categories.find(c => c.id === tx.categoryId);
                 const catName = cat ? cat.name : 'Removida';
                 const dateFormatted = tx.date.split('-').reverse().join('/');
-                return `<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors"><div class="flex items-start mb-2 sm:mb-0"><div class="bg-emerald-100 p-3 rounded-full mr-4 text-emerald-600 hidden sm:block"><i class="fas fa-shopping-cart text-lg"></i></div><div><h4 class="font-bold text-gray-800">${tx.location}</h4><p class="text-sm text-gray-500">${catName} ${tx.description ? '- '+tx.description : ''}</p><div class="flex items-center text-xs text-gray-400 mt-1"><i class="fas fa-calendar-alt mr-1"></i> ${dateFormatted} <i class="fas fa-clock ml-3 mr-1"></i> ${tx.time}</div></div></div><div class="flex items-center w-full sm:w-auto justify-between sm:justify-end"><span class="font-bold text-red-500 text-lg mr-4">- ${formatMoney(tx.amount)}</span><button onclick="deleteTransaction('${tx.id}')" class="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors"><i class="fas fa-trash"></i></button></div></div>`;
+                return `<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border border-gray-100 rounded-xl hover:bg-white shadow-sm transition-colors mb-3"><div class="flex items-start mb-2 sm:mb-0"><div class="bg-red-50 p-3 rounded-full mr-4 text-red-500 hidden sm:block"><i class="fas fa-arrow-down text-lg"></i></div><div><h4 class="font-bold text-gray-800">${tx.location}</h4><p class="text-sm text-gray-500"><span class="font-medium text-emerald-700">${catName}</span> ${tx.description ? ' - '+tx.description : ''}</p><div class="flex items-center text-xs text-gray-400 mt-1"><i class="fas fa-calendar-alt mr-1"></i> ${dateFormatted} <i class="fas fa-clock ml-3 mr-1"></i> ${tx.time}</div></div></div><div class="flex items-center w-full sm:w-auto justify-between sm:justify-end"><span class="font-bold text-red-500 text-lg mr-4">- ${formatMoney(tx.amount)}</span><button onclick="deleteTransaction('${tx.id}')" class="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors"><i class="fas fa-trash"></i></button></div></div>`;
             }).join('');
 
+            // ATUALIZAR DROPDOWNS (SELECT) E LISTAS DE AJUSTES
             const catContainer = document.getElementById('categories-container');
-            catContainer.innerHTML = categories.map(cat => `<div class="flex justify-between items-center p-3 border border-gray-100 rounded-xl bg-white"><div class="flex flex-col sm:flex-row sm:items-center"><span class="font-bold text-gray-800 mr-3">${cat.name}</span><span class="text-xs px-2 py-0.5 rounded-full ${cat.type === 'fixa' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}">${cat.type === 'fixa' ? 'Fixo' : 'Variável'}</span></div><div class="flex items-center"><span class="font-medium text-gray-600 mr-4 border-r pr-4 border-gray-200">Limite: ${formatMoney(cat.budget)}</span><button onclick="deleteCategory('${cat.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button></div></div>`).join('');
+            catContainer.innerHTML = categories.map(cat => `<div class="flex justify-between items-center p-3 border border-gray-100 rounded-xl bg-white shadow-sm"><div class="flex flex-col sm:flex-row sm:items-center"><span class="font-bold text-gray-800 mr-3">${cat.name}</span><span class="text-xs px-2 py-0.5 rounded-full ${cat.type === 'fixa' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}">${cat.type === 'fixa' ? 'Fixa' : 'Variável'}</span></div><div class="flex items-center"><span class="font-medium text-gray-600 mr-4 border-r pr-4 border-gray-200">Comprometido: ${formatMoney(cat.budget)}</span><button onclick="deleteCategory('${cat.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button></div></div>`).join('');
 
-            document.getElementById('tx-category').innerHTML = '<option value="">Selecione...</option>' + categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            // Dropdown de Lançamento -> AGORA EXIBE APENAS VARIÁVEIS
+            const variableCategories = categories.filter(c => c.type === 'variavel');
+            document.getElementById('tx-category').innerHTML = '<option value="">Selecione a Categoria...</option>' + variableCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+            // ATUALIZAR ABA DE RELATÓRIOS DETALHADOS
+            document.getElementById('detailed-report-container').innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 shadow-sm">
+                        <p class="text-sm text-gray-500 font-medium mb-1"><i class="fas fa-wallet mr-1"></i> Renda Mensal Total</p>
+                        <h4 class="text-2xl font-bold text-gray-800">${formatMoney(income)}</h4>
+                    </div>
+                    <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 shadow-sm">
+                        <p class="text-sm text-emerald-600 font-medium mb-1"><i class="fas fa-coins mr-1"></i> Saldo Livre (Sem Reserva)</p>
+                        <h4 class="text-2xl font-bold text-emerald-800">${formatMoney(freeToBudget)}</h4>
+                    </div>
+                    <div class="bg-red-50 p-5 rounded-xl border border-red-200 shadow-sm">
+                        <p class="text-sm text-red-600 font-medium mb-1"><i class="fas fa-lock mr-1"></i> Total Despesas Fixas</p>
+                        <h4 class="text-2xl font-bold text-red-800">${formatMoney(totalFixa)}</h4>
+                        <p class="text-xs text-red-500 mt-1">Comprometimento automático</p>
+                    </div>
+                    <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-sm">
+                        <p class="text-sm text-blue-600 font-medium mb-1"><i class="fas fa-piggy-bank mr-1"></i> Total Reservas Variáveis</p>
+                        <h4 class="text-2xl font-bold text-blue-800">${formatMoney(totalVariavel)}</h4>
+                        <p class="text-xs text-blue-500 mt-1">Lazer, Alimentação, etc.</p>
+                    </div>
+                    <div class="bg-orange-50 p-5 rounded-xl border border-orange-200 shadow-sm">
+                        <p class="text-sm text-orange-600 font-medium mb-1"><i class="fas fa-shopping-cart mr-1"></i> Total de Gastos Lançados</p>
+                        <h4 class="text-2xl font-bold text-orange-800">${formatMoney(spent)}</h4>
+                        <p class="text-xs text-orange-500 mt-1">Consumo das suas reservas variáveis</p>
+                    </div>
+                    <div class="bg-gray-800 p-5 rounded-xl border border-gray-900 shadow-sm">
+                        <p class="text-sm text-gray-300 font-medium mb-1"><i class="fas fa-landmark mr-1"></i> Saldo Real Estimado na Conta</p>
+                        <h4 class="text-2xl font-bold text-white">${formatMoney(realRemaining)}</h4>
+                        <p class="text-xs text-gray-400 mt-1">Renda - Despesas Fixas - Gastos Variáveis</p>
+                    </div>
+                </div>
+            `;
         }
 
+        // LÓGICA DE FORMULÁRIOS
         document.getElementById('form-transaction').addEventListener('submit', function(e) {
             e.preventDefault();
             transactions.unshift({
@@ -539,8 +721,8 @@
             document.getElementById('cat-budget').value = '';
         });
 
-        window.deleteTransaction = function(id) { if(confirm('Eliminar gasto?')) { transactions = transactions.filter(tx => tx.id !== id); saveDataToFirebase(); } }
-        window.deleteCategory = function(id) { if(confirm('Eliminar categoria e gastos?')) { categories = categories.filter(c => c.id !== id); transactions = transactions.filter(tx => tx.categoryId !== id); saveDataToFirebase(); } }
+        window.deleteTransaction = function(id) { if(confirm('Eliminar esta despesa lançada? O valor gasto será revertido.')) { transactions = transactions.filter(tx => tx.id !== id); saveDataToFirebase(); } }
+        window.deleteCategory = function(id) { if(confirm('Eliminar esta categoria e todas as suas despesas lançadas? O valor comprometido voltará para o Saldo Livre.')) { categories = categories.filter(c => c.id !== id); transactions = transactions.filter(tx => tx.categoryId !== id); saveDataToFirebase(); } }
     </script>
 </body>
 </html>
