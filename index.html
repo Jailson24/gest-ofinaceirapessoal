@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinançasPro - Gestão Pessoal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 h-screen flex flex-col overflow-hidden">
+
+    <div id="auth-screen" class="absolute inset-0 bg-emerald-900 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl p-8 shadow-2xl w-full max-w-md my-8">
+            <div class="text-center mb-8">
+                <i class="fas fa-wallet text-emerald-600 text-5xl mb-4"></i>
+                <h1 class="font-bold text-3xl text-gray-800 tracking-tight">Finanças<span class="text-emerald-600">Pro</span></h1>
+                <p class="text-gray-500 mt-2">O seu gestor financeiro inteligente.</p>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Aceder à conta</h2>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                    <input type="email" id="login-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <input type="password" id="login-password" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">
+                    Entrar
+                </button>
+                <div class="flex justify-between text-sm mt-4">
+                    <button type="button" onclick="toggleAuthMode('register')" class="text-emerald-600 hover:underline font-medium">Criar conta grátis (15 dias)</button>
+                    <button type="button" onclick="toggleAuthMode('recover')" class="text-gray-500 hover:underline">Esqueci a senha</button>
+                </div>
+            </form>
+
+            <form id="register-form" class="space-y-4 hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Criar nova conta</h2>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">CPF</label>
+                    <input type="text" id="reg-cpf" required placeholder="000.000.000-00" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                    <input type="email" id="reg-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha (Mínimo 6 caracteres)</label>
+                    <input type="password" id="reg-password" required minlength="6" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <button type="submit" class="w-full mt-2 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition-colors">
+                    Criar Conta
+                </button>
+                <div class="text-center text-sm mt-4">
+                    <button type="button" onclick="toggleAuthMode('login')" class="text-emerald-600 hover:underline font-medium">Já tenho conta. Iniciar sessão.</button>
+                </div>
+            </form>
+
+            <form id="recover-form" class="space-y-4 hidden">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Recuperar Senha</h2>
+                <p class="text-sm text-gray-600 mb-4">Insira o seu e-mail e enviaremos um link de recuperação.</p>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                    <input type="email" id="rec-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">
+                    Enviar Link
+                </button>
+                <div class="text-center text-sm mt-4">
+                    <button type="button" onclick="toggleAuthMode('login')" class="text-gray-500 hover:underline">Voltar para Login</button>
+                </div>
+            </form>
+
+            <div id="auth-loading" class="hidden mt-4 text-center text-emerald-600">
+                <i class="fas fa-circle-notch fa-spin text-2xl"></i>
+                <p class="text-sm mt-2 font-medium">A processar...</p>
+            </div>
+            <div id="auth-error" class="hidden mt-4 p-3 bg-red-100 text-red-700 text-sm rounded-xl text-center"></div>
+            <div id="auth-success" class="hidden mt-4 p-3 bg-green-100 text-green-700 text-sm rounded-xl text-center"></div>
+        </div>
+    </div>
+
+    <div id="paywall-screen" class="hidden absolute inset-0 bg-gray-100 z-40 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 shadow-2xl w-full max-w-lg text-center border-t-8 border-red-500">
+            <div class="bg-red-100 text-red-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-lock text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Tempo Esgotado</h2>
+            <p class="text-gray-600 mb-8">Os seus 15 dias de teste grátis terminaram. Para continuar a gerenciar suas finanças e acessar seus dados, por favor assine o nosso plano mensal.</p>
+            
+            <div class="bg-gray-50 rounded-xl p-4 mb-8 border border-gray-200">
+                <p class="text-sm text-gray-500 uppercase tracking-wider font-bold">Plano Pro</p>
+                <p class="text-3xl font-bold text-gray-800 mt-1">R$ 49,00 <span class="text-lg font-normal text-gray-500">/mês</span></p>
+            </div>
+
+            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=SEU_PLANO_AQUI" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors mb-4 flex items-center justify-center">
+                <i class="fas fa-handshake mr-2"></i> Assinar via Mercado Pago
+            </a>
+            
+            <button onclick="logout()" class="text-gray-500 hover:text-gray-800 underline text-sm">
+                Sair da conta
+            </button>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden flex flex-col h-screen w-full">
+        <header class="bg-emerald-800 text-white shadow-md z-10 shrink-0">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <i class="fas fa-wallet text-emerald-300 text-2xl mr-3"></i>
+                        <span class="font-bold text-xl tracking-tight hidden sm:inline">Finanças<span class="text-emerald-300">Pro</span></span>
+                    </div>
+                    <nav class="flex space-x-1 sm:space-x-3">
+                        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn bg-emerald-900 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                            <i class="fas fa-home sm:mr-2"></i> <span class="hidden md:inline">Visão Geral</span>
+                        </button>
+                        <button onclick="switchTab('add')" id="btn-add" class="tab-btn text-emerald-100 hover:bg-emerald-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                            <i class="fas fa-plus-circle sm:mr-2"></i> <span class="hidden md:inline">Lançar</span>
+                        </button>
+                        <button onclick="switchTab('settings')" id="btn-settings" class="tab-btn text-emerald-100 hover:bg-emerald-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                            <i class="fas fa-cog sm:mr-2"></i> <span class="hidden md:inline">Ajustes</span>
+                        </button>
+                        <button onclick="logout()" class="text-red-300 hover:bg-red-800 hover:text-white ml-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center border border-transparent hover:border-red-700">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow overflow-y-auto">
+            
+            <div id="tab-dashboard" class="tab-content active space-y-8 pb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-emerald-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-20"><i class="fas fa-wallet text-5xl"></i></div>
+                        <p class="text-emerald-100 text-sm font-medium">Saldo Disponível</p>
+                        <h2 class="text-3xl font-bold mt-1" id="dash-remaining">R$ 0,00</h2>
+                        <p class="text-emerald-200 text-xs mt-2">De <span id="dash-income">R$ 0,00</span> (Renda Mensal)</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 flex items-center">
+                        <div class="bg-emerald-100 p-3 rounded-full mr-4 text-emerald-600">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Orçado Total</p>
+                            <h3 class="text-xl font-bold text-gray-800" id="dash-budgeted">R$ 0,00</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 flex items-center">
+                        <div class="bg-red-100 p-3 rounded-full mr-4 text-red-600">
+                            <i class="fas fa-arrow-down text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm font-medium">Gasto Atual</p>
+                            <h3 class="text-xl font-bold text-gray-800" id="dash-spent">R$ 0,00</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-list mr-2 text-emerald-600"></i> Orçamento por Categoria
+                    </h3>
+                    <div id="progress-bars-container" class="space-y-6"></div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-history mr-2 text-emerald-600"></i> Histórico de Gastos
+                    </h3>
+                    <div id="history-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <div id="tab-add" class="tab-content pb-8">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 max-w-2xl mx-auto">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-plus-circle mr-2 text-emerald-600 text-2xl"></i> Novo Lançamento
+                    </h3>
+                    <form id="form-transaction" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
+                                <input type="number" step="0.01" id="tx-amount" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="0,00">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                                <select id="tx-category" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                    <option value="">Selecione...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fas fa-calendar-alt"></i></div>
+                                    <input type="date" id="tx-date" required class="w-full pl-10 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Hora</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fas fa-clock"></i></div>
+                                    <input type="time" id="tx-time" required class="w-full pl-10 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Local / Estabelecimento</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fas fa-map-marker-alt"></i></div>
+                                <input type="text" id="tx-location" required class="w-full pl-10 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Ex: Supermercado Extra">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Descrição Adicional (Opcional)</label>
+                            <input type="text" id="tx-description" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Ex: Compras do mês">
+                        </div>
+                        <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-colors">
+                            Salvar Gasto
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="tab-settings" class="tab-content pb-8">
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-wallet mr-2 text-emerald-600"></i> Configuração de Renda
+                        </h3>
+                        <div class="flex flex-col sm:flex-row items-end gap-4">
+                            <div class="w-full sm:w-2/3 md:w-1/3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Renda Mensal Total (R$)</label>
+                                <input type="number" id="input-income" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                            </div>
+                            <button onclick="saveIncome()" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl font-medium transition-colors">Guardar</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cog mr-2 text-emerald-600"></i> Distribuição de Orçamento
+                        </h3>
+                        <form id="form-category" class="flex flex-col md:flex-row gap-3 mb-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <div class="flex-1">
+                                <input type="text" id="cat-name" required placeholder="Nova Categoria (Ex: Viagem)" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                            </div>
+                            <div class="w-full md:w-40">
+                                <select id="cat-type" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                    <option value="fixa">Custo Fixo</option>
+                                    <option value="variavel">Custo Variável</option>
+                                </select>
+                            </div>
+                            <div class="w-full md:w-40">
+                                <input type="number" id="cat-budget" required placeholder="Limite (R$)" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+                            </div>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-colors whitespace-nowrap">
+                                Adicionar
+                            </button>
+                        </form>
+                        <div id="categories-container" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // =================================================================
+        // AS SUAS CHAVES DO FIREBASE
+        // =================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyACitx-lUbRLcBeDBiEPzPRLSlqJD_60-Y",
+            authDomain: "gestaofinanceirapessoal-5c0c0.firebaseapp.com",
+            projectId: "gestaofinanceirapessoal-5c0c0",
+            storageBucket: "gestaofinanceirapessoal-5c0c0.firebasestorage.app",
+            messagingSenderId: "446539204313",
+            appId: "1:446539204313:web:db965ce874413b39fa20c8",
+            measurementId: "G-X396WSH5ME"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ================= ESTADO GLOBAL =================
+        let currentUser = null;
+        let hasActiveTrial = false;
+
+        let income = 3500;
+        let categories = [
+            { id: '1', name: 'Moradia', type: 'fixa', budget: 1500 },
+            { id: '2', name: 'Alimentação', type: 'variavel', budget: 800 },
+            { id: '3', name: 'Lazer', type: 'variavel', budget: 300 }
+        ];
+        let transactions = [];
+
+        // ================= FUNÇÕES DE AUTENTICAÇÃO =================
+        function showLoading() {
+            document.getElementById('auth-loading').classList.remove('hidden');
+            document.getElementById('auth-error').classList.add('hidden');
+            document.getElementById('auth-success').classList.add('hidden');
+        }
+        function hideLoading() { document.getElementById('auth-loading').classList.add('hidden'); }
+        function showError(msg) { hideLoading(); document.getElementById('auth-error').innerText = msg; document.getElementById('auth-error').classList.remove('hidden'); }
+        function showSuccess(msg) { hideLoading(); document.getElementById('auth-success').innerText = msg; document.getElementById('auth-success').classList.remove('hidden'); }
+
+        window.toggleAuthMode = function(mode) {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('recover-form').classList.add('hidden');
+            document.getElementById('auth-error').classList.add('hidden');
+            document.getElementById('auth-success').classList.add('hidden');
+
+            if (mode === 'login') document.getElementById('login-form').classList.remove('hidden');
+            if (mode === 'register') document.getElementById('register-form').classList.remove('hidden');
+            if (mode === 'recover') document.getElementById('recover-form').classList.remove('hidden');
+        };
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            showLoading();
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch (error) { showError("Erro: " + error.message); }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const cpf = document.getElementById('reg-cpf').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-password').value;
+            showLoading();
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+                
+                // Grava CPF e data
+                const profileRef = doc(db, 'users', user.uid);
+                await setDoc(profileRef, { createdAt: Date.now(), cpf: cpf });
+
+                // Dados iniciais
+                const dataRef = doc(db, 'finance_data', user.uid);
+                await setDoc(dataRef, { income, categories, transactions });
+            } catch (error) { showError("Erro: " + error.message); }
+        });
+
+        document.getElementById('recover-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('rec-email').value;
+            showLoading();
+            try { await sendPasswordResetEmail(auth, email); showSuccess("Link enviado!"); } catch (error) { showError("Erro: " + error.message); }
+        });
+
+        window.logout = async function() { await signOut(auth); location.reload(); };
+
+        // ================= GESTÃO DE SESSÃO =================
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('auth-screen').classList.add('hidden');
+                const isValid = await checkTrialPeriod(user.uid);
+                
+                if (isValid) {
+                    hasActiveTrial = true;
+                    await loadDataFromFirebase();
+                    document.getElementById('app-container').classList.remove('hidden');
+                    document.getElementById('paywall-screen').classList.add('hidden');
+                } else {
+                    hasActiveTrial = false;
+                    document.getElementById('app-container').classList.add('hidden');
+                    document.getElementById('paywall-screen').classList.remove('hidden');
+                }
+            } else {
+                currentUser = null;
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('paywall-screen').classList.add('hidden');
+                document.getElementById('auth-screen').classList.remove('hidden');
+                toggleAuthMode('login');
+            }
+        });
+
+        async function checkTrialPeriod(uid) {
+            try {
+                const profileRef = doc(db, 'users', uid);
+                const snap = await getDoc(profileRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    const createdAt = data.createdAt || Date.now();
+                    const daysElapsed = (Date.now() - createdAt) / (1000 * 60 * 60 * 24);
+                    return daysElapsed <= 15;
+                } else {
+                    await setDoc(profileRef, { createdAt: Date.now() });
+                    return true;
+                }
+            } catch (e) { return false; }
+        }
+
+        // ================= BANCO DE DADOS =================
+        async function loadDataFromFirebase() {
+            if (!currentUser || !hasActiveTrial) return;
+            try {
+                const dataRef = doc(db, 'finance_data', currentUser.uid);
+                const snap = await getDoc(dataRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    income = data.income !== undefined ? data.income : 3500;
+                    categories = data.categories || [];
+                    transactions = data.transactions || [];
+                }
+                const now = new Date();
+                document.getElementById('tx-date').value = now.toISOString().split('T')[0];
+                document.getElementById('tx-time').value = now.toTimeString().split(' ')[0].substring(0, 5);
+                document.getElementById('input-income').value = income;
+                updateUI();
+            } catch (e) { console.error("Erro ao carregar:", e); }
+        }
+
+        async function saveDataToFirebase() {
+            if (!currentUser || !hasActiveTrial) return;
+            try {
+                const dataRef = doc(db, 'finance_data', currentUser.uid);
+                await setDoc(dataRef, { income, categories, transactions });
+                updateUI();
+            } catch (e) { console.error("Erro ao gravar:", e); }
+        }
+
+        // ================= LÓGICA DA APLICAÇÃO =================
+        window.saveIncome = function() {
+            const val = parseFloat(document.getElementById('input-income').value);
+            if (!isNaN(val)) { income = val; saveDataToFirebase(); alert("Guardado!"); }
+        }
+
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-emerald-900', 'text-white');
+                el.classList.add('text-emerald-100');
+            });
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            const btn = document.getElementById(`btn-${tabId}`);
+            btn.classList.remove('text-emerald-100');
+            btn.classList.add('bg-emerald-900', 'text-white');
+            if(tabId === 'dashboard') updateUI();
+        }
+
+        const formatMoney = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+
+        function updateUI() {
+            const spent = transactions.reduce((acc, tx) => acc + tx.amount, 0);
+            const totalBudget = categories.reduce((acc, cat) => acc + cat.budget, 0);
+            const remaining = income - spent;
+            const spentPerCategory = {};
+            categories.forEach(c => spentPerCategory[c.id] = 0);
+            transactions.forEach(tx => { if (spentPerCategory[tx.categoryId] !== undefined) spentPerCategory[tx.categoryId] += tx.amount; });
+
+            document.getElementById('dash-remaining').innerText = formatMoney(remaining);
+            document.getElementById('dash-income').innerText = formatMoney(income);
+            document.getElementById('dash-budgeted').innerText = formatMoney(totalBudget);
+            document.getElementById('dash-spent').innerText = formatMoney(spent);
+
+            const progressContainer = document.getElementById('progress-bars-container');
+            if (categories.length === 0) progressContainer.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhuma categoria.</p>';
+            else progressContainer.innerHTML = categories.map(cat => {
+                const catSpent = spentPerCategory[cat.id] || 0;
+                const percentage = cat.budget > 0 ? Math.min((catSpent / cat.budget) * 100, 100) : 0;
+                const isOverLimit = percentage >= 85;
+                const barColor = isOverLimit ? 'bg-red-500' : 'bg-blue-500';
+                const textColor = isOverLimit ? 'text-red-600' : 'text-blue-600';
+                let alertHtml = isOverLimit ? `<div class="flex items-center mt-1 text-red-500 text-xs font-medium animate-pulse"><i class="fas fa-exclamation-triangle mr-1"></i> Atenção: Atingiu ${percentage.toFixed(0)}% do limite!</div>` : '';
+                return `<div class="relative"><div class="flex justify-between items-end mb-1"><div><span class="font-semibold text-gray-800">${cat.name}</span><span class="ml-2 text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full capitalize">${cat.type}</span></div><div class="text-sm font-medium text-gray-600"><span class="${textColor}">${formatMoney(catSpent)}</span> / ${formatMoney(cat.budget)}</div></div><div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden"><div class="${barColor} h-3 rounded-full transition-all duration-500" style="width: ${percentage}%"></div></div>${alertHtml}</div>`;
+            }).join('');
+
+            const historyContainer = document.getElementById('history-container');
+            if (transactions.length === 0) historyContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhum gasto.</p>';
+            else historyContainer.innerHTML = transactions.map(tx => {
+                const cat = categories.find(c => c.id === tx.categoryId);
+                const catName = cat ? cat.name : 'Removida';
+                const dateFormatted = tx.date.split('-').reverse().join('/');
+                return `<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors"><div class="flex items-start mb-2 sm:mb-0"><div class="bg-emerald-100 p-3 rounded-full mr-4 text-emerald-600 hidden sm:block"><i class="fas fa-shopping-cart text-lg"></i></div><div><h4 class="font-bold text-gray-800">${tx.location}</h4><p class="text-sm text-gray-500">${catName} ${tx.description ? '- '+tx.description : ''}</p><div class="flex items-center text-xs text-gray-400 mt-1"><i class="fas fa-calendar-alt mr-1"></i> ${dateFormatted} <i class="fas fa-clock ml-3 mr-1"></i> ${tx.time}</div></div></div><div class="flex items-center w-full sm:w-auto justify-between sm:justify-end"><span class="font-bold text-red-500 text-lg mr-4">- ${formatMoney(tx.amount)}</span><button onclick="deleteTransaction('${tx.id}')" class="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors"><i class="fas fa-trash"></i></button></div></div>`;
+            }).join('');
+
+            const catContainer = document.getElementById('categories-container');
+            catContainer.innerHTML = categories.map(cat => `<div class="flex justify-between items-center p-3 border border-gray-100 rounded-xl bg-white"><div class="flex flex-col sm:flex-row sm:items-center"><span class="font-bold text-gray-800 mr-3">${cat.name}</span><span class="text-xs px-2 py-0.5 rounded-full ${cat.type === 'fixa' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}">${cat.type === 'fixa' ? 'Fixo' : 'Variável'}</span></div><div class="flex items-center"><span class="font-medium text-gray-600 mr-4 border-r pr-4 border-gray-200">Limite: ${formatMoney(cat.budget)}</span><button onclick="deleteCategory('${cat.id}')" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button></div></div>`).join('');
+
+            document.getElementById('tx-category').innerHTML = '<option value="">Selecione...</option>' + categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+
+        document.getElementById('form-transaction').addEventListener('submit', function(e) {
+            e.preventDefault();
+            transactions.unshift({
+                id: Date.now().toString(),
+                amount: parseFloat(document.getElementById('tx-amount').value),
+                categoryId: document.getElementById('tx-category').value,
+                date: document.getElementById('tx-date').value,
+                time: document.getElementById('tx-time').value,
+                location: document.getElementById('tx-location').value,
+                description: document.getElementById('tx-description').value
+            });
+            saveDataToFirebase();
+            document.getElementById('tx-amount').value = '';
+            document.getElementById('tx-location').value = '';
+            document.getElementById('tx-description').value = '';
+            window.switchTab('dashboard');
+        });
+
+        document.getElementById('form-category').addEventListener('submit', function(e) {
+            e.preventDefault();
+            categories.push({
+                id: Date.now().toString(),
+                name: document.getElementById('cat-name').value,
+                type: document.getElementById('cat-type').value,
+                budget: parseFloat(document.getElementById('cat-budget').value)
+            });
+            saveDataToFirebase();
+            document.getElementById('cat-name').value = '';
+            document.getElementById('cat-budget').value = '';
+        });
+
+        window.deleteTransaction = function(id) { if(confirm('Eliminar gasto?')) { transactions = transactions.filter(tx => tx.id !== id); saveDataToFirebase(); } }
+        window.deleteCategory = function(id) { if(confirm('Eliminar categoria e gastos?')) { categories = categories.filter(c => c.id !== id); transactions = transactions.filter(tx => tx.categoryId !== id); saveDataToFirebase(); } }
+    </script>
+</body>
+</html>
