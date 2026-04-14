@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,19 +34,19 @@
 
             <!-- Form Login -->
             <form id="login-form" class="space-y-4">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Acessar Conta</h2>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Aceder à Conta</h2>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
                     <input type="email" id="login-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Palavra-passe</label>
                     <input type="password" id="login-password" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
                 <button type="submit" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-colors">Entrar</button>
                 <div class="flex justify-between text-sm mt-4">
                     <button type="button" onclick="toggleAuthMode('register')" class="text-emerald-600 hover:underline font-medium">Criar conta grátis (15 dias)</button>
-                    <button type="button" onclick="toggleAuthMode('recover')" class="text-gray-500 hover:underline">Esqueci a senha</button>
+                    <button type="button" onclick="toggleAuthMode('recover')" class="text-gray-500 hover:underline">Esqueci a palavra-passe</button>
                 </div>
             </form>
 
@@ -62,18 +62,18 @@
                     <input type="email" id="reg-email" required class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha (Mín. 6 caracteres)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Palavra-passe (Mín. 6 caracteres)</label>
                     <input type="password" id="reg-password" required minlength="6" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
                 <button type="submit" class="w-full mt-2 bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition-colors">Criar Conta</button>
                 <div class="text-center text-sm mt-4">
-                    <button type="button" onclick="toggleAuthMode('login')" class="text-emerald-600 hover:underline font-medium">Já tenho conta. Logar.</button>
+                    <button type="button" onclick="toggleAuthMode('login')" class="text-emerald-600 hover:underline font-medium">Já tenho conta. Entrar.</button>
                 </div>
             </form>
 
-            <!-- Form Recuperar Senha -->
+            <!-- Form Recuperar Palavra-passe -->
             <form id="recover-form" class="space-y-4 hidden">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Recuperar Senha</h2>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Recuperar Palavra-passe</h2>
                 <p class="text-sm text-gray-600 mb-4">Insira o seu e-mail e enviaremos um link de recuperação.</p>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
@@ -108,8 +108,8 @@
                 <p class="text-3xl font-bold text-gray-800 mt-1">R$ 24,90 <span class="text-lg font-normal text-gray-500">/mês</span></p>
             </div>
 
-            <!-- Link do Mercado Pago -->
-            <a href="SEU_LINK_MERCADO_PAGO_AQUI" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors mb-6 flex items-center justify-center shadow-md">
+            <!-- Link do Mercado Pago Inserido Aqui -->
+            <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=fa5eb6dd074a4dff92b74cc2e16ae338" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors mb-6 flex items-center justify-center shadow-md">
                 <i class="fas fa-check-circle mr-2"></i> Assinar via Mercado Pago
             </a>
             
@@ -422,7 +422,7 @@
         window.activateSubscription = async function() {
             const codeInput = document.getElementById('activation-code').value.toUpperCase().trim();
             
-            // A Palavra-passe que tu dás ao cliente após ele te pagar:
+            // A Palavra-passe secreta
             if (codeInput === 'PAGO2490') { 
                 try {
                     // Adiciona 30 dias à validade a partir de hoje
